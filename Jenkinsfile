@@ -1,4 +1,4 @@
 node {
     echo "My branch is:"
-    node --version
+    npm --version
 }
