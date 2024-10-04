@@ -1,4 +1,6 @@
 node {
+    stage 'Stage Checkout'
+    sh 'git status'  
     echo "My branch is:"
-    npm --version
+    npm i
 }
