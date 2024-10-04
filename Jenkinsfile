@@ -1,3 +1,3 @@
 node {
-    sh 'node --version'
+    echo "My branch is:"
 }
