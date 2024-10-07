@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Store to GCS') {
             steps{
-                step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: "files/test.txt"])
+                step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: "files/*"])
             }
         }
     }
