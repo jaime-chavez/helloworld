@@ -1,6 +1,20 @@
-node {
-    stage 'Stage Checkout'
-    sh 'git status'  
-    echo "My branch is:"
-    npm i
+pipeline {
+    agent {
+        'node'
+    }
+    stages {
+        stage('install') {
+            steps {
+                npm install
+            }
+        }
+        stage('run'){
+            npm start
+        }
+    }
 }
+
+
+// node {
+//     echo "My branch is:"
+// }
