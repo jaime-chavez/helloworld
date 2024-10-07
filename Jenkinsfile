@@ -29,7 +29,8 @@ pipeline {
         }
         stage('Store to GCS') {
             steps{
-                step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: "files/*"])
+                //step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: "files/*"])
+                step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: ["files/uno.yaml"]])
             }
         }
     }
