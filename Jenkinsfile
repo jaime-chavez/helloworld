@@ -25,7 +25,9 @@ pipeline {
             }
         }
         stage('test') {
-            echo "${changes}"
+            steps {
+                echo "${changes}"
+            }
         }
         // stage('Store to GCS') {
         //     steps{
