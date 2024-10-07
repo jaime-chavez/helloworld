@@ -22,17 +22,13 @@ pipeline {
                     println ("List without jenkisfile: " + changes)
                     changes.each {
                         println "list: ${it}"
-                        //ClassicUploadStep env.CREDENTIALS_ID "gs://${env.BUCKET}" "${it}"
-                        //step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
                     }
                 }
             }
         }
         stage('Store to GCS') {
             steps{
-                step([$class: 'ClassicUploadStep', credentialsId: env
-                        .CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",
-                      pattern: "files/*"])
+                step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: "files/test.txt"])
             }
         }
     }
