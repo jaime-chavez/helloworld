@@ -18,7 +18,8 @@ pipeline {
                     List<String> changes = getChangedFilesList()
                     println ("Changed file list: " + changes)
                     Integer jenkinsIndex = changes.indexOf("Jenkinsfile")
-                    println ("List without jenkisfile: " + changes.remove(0))
+                    changes.remove(jenkinsIndex)
+                    println ("List without jenkisfile: " + changes)
                 }
             }
         }
