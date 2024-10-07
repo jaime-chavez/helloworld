@@ -22,11 +22,11 @@ void executeModuleScripts(String operation) {
         String action = "${operation}:${module}"  
         
         echo("---- ${action.toUpperCase()} ----")        
-        String command = echo "${action}"                   
+        String command = "action: ${action}"                   
                 
         script {
             stage(module) {
-                bat(command)
+                echo "${command}"
             }
         }
     }
