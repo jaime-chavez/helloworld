@@ -20,13 +20,11 @@ pipeline {
                     Integer jenkinsIndex = changes.indexOf("Jenkinsfile")
                     changes.remove(jenkinsIndex)
                     println ("List without jenkisfile: " + changes)
-                    env.changes = changes
+                    changes.each {
+                        println "list: ${it}"
+                        //step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
+                    }
                 }
-            }
-        }
-        stage('Loop through list') {
-            steps {
-                loopList(env.changes)
             }
         }
         // stage('Store to GCS') {
@@ -48,11 +46,4 @@ List<String> getChangedFilesList(){
         }
     }
     return changedFiles
-}
-
-def loopList(list){
-    list.each {
-        println "list ${it}"
-        //step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
-    }
 }
