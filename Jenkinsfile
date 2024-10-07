@@ -3,7 +3,7 @@ pipeline {
     environment {
         CREDENTIALS_ID ='labkey'  //Google Cloud Storage plugin https://plugins.jenkins.io/google-storage-plugin/
         BUCKET = 'jenkinsbucketlab' 
-        PATTERN = './index.js'
+        PATTERN = 'index.js'
     }
     stages {
         stage('Stage 1') {
