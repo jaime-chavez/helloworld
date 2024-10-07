@@ -86,9 +86,7 @@ List<String> getChangedFilesList(){
             changedFiles.addAll(entry.affectedPaths)
         }
     }
-    if (changedFiles.indexOf("Jenkinsfile")){
-        Integer jenkinsIndex = changedFiles.indexOf("Jenkinsfile")
-        changedFiles.remove(jenkinsIndex)
-    }
+    if (changedFiles.indexOf("Jenkinsfile") != -1)
+        changedFiles.remove(changedFiles.indexOf("Jenkinsfile"))
     return changedFiles
 }
