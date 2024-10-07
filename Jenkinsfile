@@ -32,6 +32,13 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            // Uploads build log with name LOG as an object to our GCS bucket.
+            step([$class: 'StdoutUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}/logs",
+                logName: env.LOG])
+        }
+    }
 }
 
 @NonCPS
