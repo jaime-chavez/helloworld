@@ -24,9 +24,9 @@ pipeline {
                 }
             }
         }
-        stage('Loop through PCs') {
+        stage('Loop through list') {
             steps {
-                loopPC(env.changes)
+                loopList(env.changes)
             }
         }
         // stage('Store to GCS') {
@@ -50,9 +50,9 @@ List<String> getChangedFilesList(){
     return changedFiles
 }
 
-def loopPC(list){
+def loopList(list){
     list.each {
-        println "Computer ${it}"
-        step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
+        println "list ${it}"
+        //step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
     }
 }
