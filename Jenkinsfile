@@ -15,18 +15,10 @@ pipeline {
         stage('Get Last Commit Details') {
             steps {
                 script{
-
                     List<String> changes = getChangedFilesList()
                     println ("Changed file list: " + changes)
-
-                    String gitCommitId = getGitcommitID()
-                    println("GIT CommitID: " + gitCommitID)
+                    println ("List without jenkisfile: "+ changes.indexOf("Jenkinsfile"))
                 }
-            }
-        }
-        stage('test') {
-            steps {
-                echo "${changes}"
             }
         }
         // stage('Store to GCS') {
