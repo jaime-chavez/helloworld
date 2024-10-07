@@ -18,16 +18,9 @@ void executeFileScripts() {
     def allFiles = getChangedFilesList()
 
     allFiles.each { file -> 
-        echo("---- ${file.toUpperCase()} ----")        
-        String command = "copy: ${file}"                   
-                
-        // script {
-        //     stage(file) {
-        //         echo "${command}"
-        //     }
-        // }
+        echo("---- COPY ${file.toUpperCase()} ----")                                  
         stage(file) {
-            echo "${command}"
+            step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: "${file}"])
         }
 
     }
