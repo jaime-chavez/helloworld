@@ -1,1 +1,128 @@
-#hopla mundo gd     
+apiVersion: serving.knative.dev/v1
+kind: Revision
+metadata:
+  name: postfix-00031-7jh
+  namespace: '457816054800'
+  selfLink: /apis/serving.knative.dev/v1/namespaces/457816054800/revisions/postfix-00031-7jh
+  uid: 94544b1a-f4e6-45bf-8375-d0bcad13c690
+  resourceVersion: AAYfRbqyzZo
+  generation: 1
+  creationTimestamp: '2024-08-09T20:09:56.581325Z'
+  labels:
+    client.knative.dev/nonce: 270dcab4-fbfb-4608-841f-b6325f2454ff
+    serving.knative.dev/configuration: postfix
+    serving.knative.dev/configurationGeneration: '31'
+    serving.knative.dev/service: postfix
+    serving.knative.dev/serviceUid: 764fdebd-e511-4596-95f7-60d9606f712d
+    serving.knative.dev/route: postfix
+    cloud.googleapis.com/location: us-central1
+    run.googleapis.com/startupProbeType: Custom
+  annotations:
+    autoscaling.knative.dev/maxScale: '1'
+    run.googleapis.com/client-name: cloud-console
+    serving.knative.dev/creator: jachavez@grupoasesores.com.mx
+    run.googleapis.com/operation-id: c4238602-d6aa-4ab7-b145-d080b8a7382a
+    run.googleapis.com/startup-cpu-boost: 'true'
+  ownerReferences:
+  - kind: Configuration
+    name: postfix
+    uid: 0820ce02-8b5d-4eba-bb43-b0c940d0dedb
+    apiVersion: serving.knative.dev/v1
+    controller: true
+    blockOwnerDeletion: true
+spec:
+  containerConcurrency: 80
+  timeoutSeconds: 300
+  serviceAccountName: 457816054800-compute@developer.gserviceaccount.com
+  containers:
+  - name: server
+    image: us-central1-docker.pkg.dev/labuniformes/test-cloud-run/smtp@sha256:d6955ce136fc1e7993d04dd383c1924527173e8b00a16393b16c18865a01e82f
+    ports:
+    - name: http1
+      containerPort: 5000
+    env:
+    - name: HOSTNAME
+      value: smtp.mailgun.org
+    - name: MAILING_API_KEY
+      value: '123456'
+    - name: SMTP_PORT
+      value: '587'
+    - name: USER
+      value: postmaster@sandbox1ce5d96ad7704dcbab8c426aa99e24e4.mailgun.org
+    - name: PASSWORD
+      value: 0c1e0881e7578e928a5d698402683291-a26b1841-0b292139
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 512Mi
+    startupProbe:
+      timeoutSeconds: 1
+      periodSeconds: 5
+      failureThreshold: 3
+      httpGet:
+        path: /
+        port: 5000
+  - name: postfix-1
+    image: mirror.gcr.io/danilsmirnov/postfix@sha256:fdc5eab865c596a737af71ca3fb136e525a9d965bc1aeecae042291ed64573cf
+    env:
+    - name: SMTP_USER
+      value: jimmy:holahola
+    - name: MAIL_HOST
+      value: postfix-62hxxzcprq-uc.a.run.app
+    - name: MAIL_DOMAIN
+      value: testmail.website
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+    volumeMounts:
+    - name: opendkim
+      mountPath: /etc/opendkim/domainkeys
+    - name: certkey
+      mountPath: /etc/postfix/certs/openssl.key
+    - name: cert
+      mountPath: /etc/postfix/certs/openssl.crt
+  volumes:
+  - name: opendkim
+    secret:
+      secretName: OPENDKIM
+      items:
+      - key: '1'
+        path: mail.private
+  - name: certkey
+    secret:
+      secretName: CERTKEY
+      items:
+      - key: '1'
+        path: openssl.key
+  - name: cert
+    secret:
+      secretName: CERT
+      items:
+      - key: '1'
+        path: openssl.crt
+status:
+  observedGeneration: 1
+  conditions:
+  - type: Ready
+    status: 'True'
+    lastTransitionTime: '2024-08-09T20:10:05.611024Z'
+  - type: Active
+    status: 'True'
+    lastTransitionTime: '2024-08-09T20:10:05.752041Z'
+    severity: Info
+  - type: ContainerHealthy
+    status: 'True'
+    lastTransitionTime: '2024-08-09T20:10:05.572399Z'
+  - type: ContainerReady
+    status: 'True'
+    lastTransitionTime: '2024-08-09T20:09:57.416459Z'
+  - type: ResourcesAvailable
+    status: 'True'
+    lastTransitionTime: '2024-08-09T20:10:00.257209Z'
+  logUrl: https://console.cloud.google.com/logs/viewer?project=labuniformes&resource=cloud_run_revision/service_name/postfix/revision_name/postfix-00031-7jh&advancedFilter=resource.type%3D%22cloud_run_revision%22%0Aresource.labels.service_name%3D%22postfix%22%0Aresource.labels.revision_name%3D%22postfix-00031-7jh%22
+  containerStatuses:
+  - name: server
+    imageDigest: us-central1-docker.pkg.dev/labuniformes/test-cloud-run/smtp@sha256:d6955ce136fc1e7993d04dd383c1924527173e8b00a16393b16c18865a01e82f
+  - name: postfix-1
+    imageDigest: mirror.gcr.io/danilsmirnov/postfix@sha256:fdc5eab865c596a737af71ca3fb136e525a9d965bc1aeecae042291ed64573cf
