@@ -1,5 +1,8 @@
 pipeline {
      agent any
+     environment {
+        DO_BUILD_PACKAGES = 'true'
+     }
      stages {
         stage('Trigger Building') {
             when {
