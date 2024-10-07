@@ -17,7 +17,8 @@ pipeline {
                 script{
                     List<String> changes = getChangedFilesList()
                     println ("Changed file list: " + changes)
-                    println ("List without jenkisfile: "+ changes.indexOf("Jenkinsfile"))
+                    Integer jenkinsIndex = changes.indexOf("Jenkinsfile")
+                    println ("List without jenkisfile: " + changes.remove(0))
                 }
             }
         }
@@ -40,15 +41,4 @@ List<String> getChangedFilesList(){
         }
     }
     return changedFiles
-}
-
-@NonCPS
-String getGitcommitID(){
-    gitCommitID = " "
-    for ( changeLogSet in currentBuild.changeSets){
-        for (entry in changeLogSet.getItems()){
-            gitCommitID = entry.commitId
-        }
-    }
-    return gitCommitID
 }
