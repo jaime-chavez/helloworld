@@ -1,16 +1,22 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('secret-key')
+        CREDENTIALS_ID ='labkey'  //Google Cloud Storage plugin https://plugins.jenkins.io/google-storage-plugin/
+        BUCKET = 'jenkinsbucketlab' 
+        PATTERN = './index.js'
     }
     stages {
         stage('Stage 1') {
             steps {
                 echo 'Hello world!'
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                withCredentials([string(credentialsId: 'secret-key', variable: 'TOKEN')]) {
-                    echo "${TOKEN}"
-                }
+            }
+        }
+        stage('Store to GCS') {
+            steps{
+                step([$class: 'ClassicUploadStep', credentialsId: env
+                        .CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",
+                      pattern: env.PATTERN])
             }
         }
     }
