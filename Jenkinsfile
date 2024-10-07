@@ -1,5 +1,5 @@
 pipeline {
-    agent 'node'
+    agent any
     stages {
         stage('install') {
             steps {
@@ -7,7 +7,9 @@ pipeline {
             }
         }
         stage('run'){
-            npm start
+            steps{
+                npm start
+            } 
         }
     }
 }
