@@ -3,13 +3,14 @@ pipeline {
     environment {
         CREDENTIALS_ID ='labkey'  //Google Cloud Storage plugin https://plugins.jenkins.io/google-storage-plugin/
         BUCKET = 'jenkinsbucketlab' 
-        LOG = "log_${BUILD_TIMESTAMP}.txt" //Build Timestamp Plugin
+        LOG = "log_${BUILD_TIMESTAMP}.txt" //Build Timestamp Plugin https://plugins.jenkins.io/build-timestamp/#:~:text=Export%20build%20timestamps%20to%20build%20env
     }
     stages {
         stage('Stage 1') {
             steps {
                 echo 'Hello world!'
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+                echo "logfile name ${LOG}"
             }
         }
         stage('Get Last Commit Details') {
