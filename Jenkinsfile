@@ -8,7 +8,8 @@ pipeline {
             steps {
                 echo 'Hello world!'
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-                echo "${AWS_ACCESS_KEY_ID}"
+                withCredentials([string((credentialsId: 'secret-key', variable: 'TOKEN'))])
+                echo "${TOKEN}"
             }
         }
     }
