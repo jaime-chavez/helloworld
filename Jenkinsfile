@@ -3,7 +3,7 @@ pipeline {
     environment {
         CREDENTIALS_ID ='labkey'  //Google Cloud Storage plugin https://plugins.jenkins.io/google-storage-plugin/
         BUCKET = 'jenkinsbucketlab' 
-        LOG = 'log.txt'
+        LOG = "log_${BUILD_TIMESTAMP}.txt" //Build Timestamp Plugin
     }
     stages {
         stage('Stage 1') {
