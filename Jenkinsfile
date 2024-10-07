@@ -16,7 +16,8 @@ pipeline {
 }
 
 void executeModuleScripts(String operation) {
-    def allModules = ['module1', 'module2', 'module3', 'module4', 'module11']
+    //def allModules = ['module1', 'module2', 'module3', 'module4', 'module11']
+    def allModules = getChangedFilesList()
 
     allModules.each { module ->  
         String action = "${operation}:${module}"  
@@ -81,13 +82,13 @@ void executeModuleScripts(String operation) {
 //     }
 // }
 
-// @NonCPS
-// List<String> getChangedFilesList(){
-//     def changedFiles = []
-//     for ( changeLogSet in currentBuild.changeSets){
-//         for (entry in changeLogSet.getItems()){
-//             changedFiles.addAll(entry.affectedPaths)
-//         }
-//     }
-//     return changedFiles
-// }
+@NonCPS
+List<String> getChangedFilesList(){
+    def changedFiles = []
+    for ( changeLogSet in currentBuild.changeSets){
+        for (entry in changeLogSet.getItems()){
+            changedFiles.addAll(entry.affectedPaths)
+        }
+    }
+    return changedFiles
+}
