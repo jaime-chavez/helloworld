@@ -3,7 +3,6 @@ pipeline {
     environment {
         CREDENTIALS_ID ='labkey'  //Google Cloud Storage plugin https://plugins.jenkins.io/google-storage-plugin/
         BUCKET = 'jenkinsbucketlab' 
-        PATTERN = 'index.js'
     }
     stages {
         stage('Stage 1') {
@@ -35,7 +34,7 @@ pipeline {
     post {
         always {
             // Uploads build log with name LOG as an object to our GCS bucket.
-            step([$class: 'StdoutUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}/logs",
+            step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}/logs",
                 logName: env.LOG])
         }
     }
