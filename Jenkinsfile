@@ -12,8 +12,8 @@ pipeline {
                 echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
             }
         }
-        stage('Get Last Commit Details') {
-            steps {
+        stage('Store to GCS') {
+            steps{
                 script{
                     List<String> changes = getChangedFilesList()
                     println ("Changed file list: " + changes)
@@ -21,15 +21,12 @@ pipeline {
                     changes.remove(jenkinsIndex)
                     println ("List without jenkisfile: " + changes)
                 }
+
+                step([$class: 'ClassicUploadStep', credentialsId: env
+                        .CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",
+                      pattern: changes])
             }
         }
-        // stage('Store to GCS') {
-        //     steps{
-        //         step([$class: 'ClassicUploadStep', credentialsId: env
-        //                 .CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",
-        //               pattern: env.PATTERN])
-        //     }
-        // }
     }
 }
 
