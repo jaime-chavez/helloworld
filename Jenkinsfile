@@ -9,32 +9,28 @@ pipeline {
                 environment(name: 'DO_BUILD_PACKAGES', value: 'true')
             }
             steps {
-                executeModuleScripts('build')
+                executeFileScripts('copy')
             }
         }
      }
 }
 
-void executeModuleScripts(String operation) {
-    //def allModules = ['module1', 'module2', 'module3', 'module4', 'module11']
-    def allModules = getChangedFilesList()
+void executeFileScripts(String operation) {
+    def allFiles = getChangedFilesList()
 
-    allModules.each { module ->  
-        String action = "${operation}:${module}"  
+    allFiles.each { file ->  
+        String action = "${operation}:${file}"  
         
         echo("---- ${action.toUpperCase()} ----")        
         String command = "action: ${action}"                   
                 
         script {
-            stage(module) {
+            stage(file) {
                 echo "${command}"
             }
         }
     }
 }
-
-
-
 
 
 
@@ -90,5 +86,7 @@ List<String> getChangedFilesList(){
             changedFiles.addAll(entry.affectedPaths)
         }
     }
+    Integer jenkinsIndex = changedFiles.indexOf("Jenkinsfile")
+    changedFiles.remove(jenkinsIndex)
     return changedFiles
 }
