@@ -1,38 +1,37 @@
 pipeline {
      agent any
      environment {
-        DO_BUILD_PACKAGES = 'true'
-     }
+        CREDENTIALS_ID ='labkey'  //Google Cloud Storage plugin https://plugins.jenkins.io/google-storage-plugin/
+        BUCKET = 'jenkinsbucketlab' 
+        LOG = "log_${BUILD_TIMESTAMP}.txt" //Build Timestamp Plugin https://plugins.jenkins.io/build-timestamp/#:~:text=Export%20build%20timestamps%20to%20build%20env
+    }
      stages {
-        stage('Trigger Building') {
-            when {
-                environment(name: 'DO_BUILD_PACKAGES', value: 'true')
-            }
+        stage('Copy files to GCS') {
             steps {
-                executeFileScripts('copy')
+                executeFileScripts()
             }
         }
      }
 }
 
-void executeFileScripts(String operation) {
+void executeFileScripts() {
     def allFiles = getChangedFilesList()
 
-    allFiles.each { file ->  
-        String action = "${operation}:${file}"  
-        
-        echo("---- ${action.toUpperCase()} ----")        
-        String command = "action: ${action}"                   
+    allFiles.each { file -> 
+        echo("---- ${file.toUpperCase()} ----")        
+        String command = "copy: ${file}"                   
                 
-        script {
-            stage(file) {
-                echo "${command}"
-            }
+        // script {
+        //     stage(file) {
+        //         echo "${command}"
+        //     }
+        // }
+        stage(file) {
+            echo "${command}"
         }
+
     }
 }
-
-
 
 // pipeline {
 //     agent any
