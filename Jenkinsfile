@@ -24,6 +24,9 @@ pipeline {
                 }
             }
         }
+        stage('test') {
+            echo "${changes}"
+        }
         // stage('Store to GCS') {
         //     steps{
         //         step([$class: 'ClassicUploadStep', credentialsId: env
