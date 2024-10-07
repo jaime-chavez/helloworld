@@ -24,13 +24,18 @@ pipeline {
                 }
             }
         }
-        stage('Store to GCS') {
-            steps{
-                step([$class: 'ClassicUploadStep', credentialsId: env
-                        .CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",
-                      pattern: env.changes])
+        stage('Loop through PCs') {
+            steps {
+                loopPC(env.changes)
             }
         }
+        // stage('Store to GCS') {
+        //     steps{
+        //         step([$class: 'ClassicUploadStep', credentialsId: env
+        //                 .CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",
+        //               pattern: env.changes])
+        //     }
+        // }
     }
 }
 
@@ -43,4 +48,11 @@ List<String> getChangedFilesList(){
         }
     }
     return changedFiles
+}
+
+def loopPC(list){
+    list.each {
+        println "Computer ${it}"
+        step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
+    }
 }
