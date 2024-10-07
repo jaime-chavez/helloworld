@@ -22,8 +22,8 @@ pipeline {
                     println ("List without jenkisfile: " + changes)
                     changes.each {
                         println "list: ${it}"
-                        //ClassicUploadStep(credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: "${it}")
-                        step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
+                        ClassicUploadStep env.CREDENTIALS_ID "gs://${env.BUCKET}" "${it}"
+                        //step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}",pattern: ${it}])
                     }
                 }
             }
