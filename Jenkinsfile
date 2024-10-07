@@ -21,13 +21,6 @@ pipeline {
 
                     String gitCommitId = getGitcommitID()
                     println("GIT CommitID: " + gitCommitID)
-
-                    String gitCommitAuthorName = getAuthorName()
-                    println("GIT CommitAuthorName: " + gitCommitAuthorName)
-
-                    String gitCommitMessage = getCommitMessage()
-                    println("GIT CommitMessage: " + gitCommitMessage)
-
                 }
             }
         }
@@ -61,26 +54,4 @@ String getGitcommitID(){
         }
     }
     return gitCommitID
-}
-
-@NonCPS
-String getAuthorName(){
-    gitAuthorName = " "
-    for ( changeLogSet in currentBuild.changeSets){
-        for (entry in changeLogSet.getItems()){
-            gitAuthorName = entry.authorName
-        }
-    }
-    return gitAuthorName
-}
-
-@NonCPS
-String getCommitMessage(){
-    commitMessage = " "
-    for ( changeLogSet in currentBuild.changeSets){
-        for (entry in changeLogSet.getItems()){
-            commitMessage = entry.msg
-        }
-    }
-    return commitMessage
 }
