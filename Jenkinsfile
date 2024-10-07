@@ -1,9 +1,14 @@
+// https://plugins.jenkins.io/multibranch-build-strategy-extension/
+// https://plugins.jenkins.io/google-storage-plugin/
+// https://plugins.jenkins.io/build-timestamp/#:~:text=Export%20build%20timestamps%20to%20build%20env
+
+
 pipeline {
      agent any
      environment {
-        CREDENTIALS_ID ='labkey'  //Google Cloud Storage plugin https://plugins.jenkins.io/google-storage-plugin/
+        CREDENTIALS_ID ='labkey' //configurar en credentials,  como Google Service Account from private key
         BUCKET = 'jenkinsbucketlab' 
-        LOG = "log_${BUILD_TIMESTAMP}.txt" //Build Timestamp Plugin https://plugins.jenkins.io/build-timestamp/#:~:text=Export%20build%20timestamps%20to%20build%20env
+        LOG = "log_${BUILD_TIMESTAMP}.txt" //configurar en system
     }
      stages {
         stage('Copy files to GCS') {
