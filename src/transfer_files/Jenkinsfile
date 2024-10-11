@@ -26,8 +26,10 @@ pipeline {
 
 void executeFileCopy() {
     def allFiles = getChangedFilesList()
+    def patron = ~/^src\/transfer_files\/files\/.+$/
+    def coincidencias = lista.findAll { it ==~ patron }
 
-    allFiles.each { file -> 
+    coincidencias.each { file -> 
         echo("---- COPY ${file.toUpperCase()} ----")                                  
         stage(file) {
             step([$class: 'ClassicUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}", pattern: "${file}"])
