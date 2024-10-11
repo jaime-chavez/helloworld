@@ -16,10 +16,5 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Deploy') {
-            steps {
-                // Add your deployment steps here
-            }
-        }
     }
 }
