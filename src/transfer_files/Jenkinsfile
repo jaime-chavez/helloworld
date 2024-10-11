@@ -27,7 +27,7 @@ pipeline {
 void executeFileCopy() {
     def allFiles = getChangedFilesList()
     def patron = ~/^src\/transfer_files\/files\/.+$/
-    def coincidencias = lista.findAll { it ==~ patron }
+    def coincidencias = allFiles.findAll { it ==~ patron }
 
     coincidencias.each { file -> 
         echo("---- COPY ${file.toUpperCase()} ----")                                  
