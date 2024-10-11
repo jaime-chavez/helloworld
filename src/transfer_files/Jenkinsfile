@@ -19,6 +19,7 @@ pipeline {
      }
      post {
         always {
+            echo("---- UPLOAD LOG ----")
             step([$class: 'StdoutUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${env.BUCKET}/logs", logName: env.LOG])
         }
     }
