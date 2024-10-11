@@ -8,7 +8,7 @@ pipeline {
      environment {
         CREDENTIALS_ID ='labkey' //configurar en credentials,  como Google Service Account from private key
         BUCKET = 'jenkinsbucketlab' 
-        LOG = "log_${BUILD_TIMESTAMP}.txt" //configurar en system
+        LOG = "log_filetransfer_${BUILD_TIMESTAMP}.txt" //configurar en system
     }
      stages {
         stage('Copy files to GCS') {
