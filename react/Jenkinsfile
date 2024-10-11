@@ -1,0 +1,25 @@
+// NodeJS plugin https://plugins.jenkins.io/nodejs/   configurar en tools
+
+pipeline {
+    agent any
+    tools {
+        nodejs 'NodeJS' // Name of the NodeJS installation
+    }
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Add your deployment steps here
+            }
+        }
+    }
+}
