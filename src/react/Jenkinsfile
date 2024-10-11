@@ -3,7 +3,7 @@
 pipeline {
     agent any
     tools {
-        nodejs 'NodeJS' // Name of the NodeJS installation
+        nodejs 'node22.9.0' // Name of the NodeJS installation
     }
     stages {
         stage('Install Dependencies') {
