@@ -9,7 +9,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 nodejs('node22.9.0') {
-                    echo "coso"
+                    echo $PATH
                 }
                 
                 //echo $PATH
