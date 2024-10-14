@@ -10,8 +10,9 @@ pipeline {
     environment {
         CI = 'true'
     }
-    stages {
-        dir('src/react') {
+    dir('src/react') {
+        stages {
+        
             stage('Build') {
                 steps {
                     sh 'npm install'
