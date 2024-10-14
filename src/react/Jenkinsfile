@@ -8,9 +8,15 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                echo "coso"
-                sh 'npm install'
+                
+                echo $PATH
+                node --version
+                npm --version
+                //sh 'npm install'
             }
+        }
+        nodejs('node22.9.0') {
+            echo "coso"
         }
         // stage('Build') {
         //     steps {
