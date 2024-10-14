@@ -9,7 +9,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 nodejs('node22.9.0') {
-                    echo $PATH
+                    node --version
+                    //echo $PATH
                 }
                 
                 //echo $PATH
