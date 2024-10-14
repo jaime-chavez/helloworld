@@ -1,29 +1,32 @@
 // NodeJS plugin https://plugins.jenkins.io/nodejs/   configurar en tools
 
 pipeline {
-    agent any
-    // tools {
-    //     nodejs 'node22.9.0' // Name of the NodeJS installation
-    // }
+    agent {
+        docker {
+            image 'node:lts-buster-slim'
+            args '-p 3000:3000'
+        }
+    }
+    environment {
+        CI = 'true'
+    }
     stages {
-        stage('Install Dependencies') {
+        stage('Build') {
             steps {
-                nodejs('node22.9.0') {
-                    sh 'node --version'
-                    //echo $PATH
-                }
-                
-                //echo $PATH
-                //node --version
-                //npm --version
-                //sh 'npm install'
+                sh 'npm install'
             }
         }
-        
-        // stage('Build') {
-        //     steps {
-        //         sh 'npm run build'
-        //     }
-        // }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
+        }
+        stage('Deliver') {
+            steps {
+                sh './jenkins/scripts/deliver.sh'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './jenkins/scripts/kill.sh'
+            }
+        }
     }
 }
