@@ -2,22 +2,23 @@
 
 pipeline {
     agent any
-    tools {
-        nodejs 'node22.9.0' // Name of the NodeJS installation
-    }
+    // tools {
+    //     nodejs 'node22.9.0' // Name of the NodeJS installation
+    // }
     stages {
         stage('Install Dependencies') {
             steps {
+                nodejs('node22.9.0') {
+                    echo "coso"
+                }
                 
-                echo $PATH
-                node --version
-                npm --version
+                //echo $PATH
+                //node --version
+                //npm --version
                 //sh 'npm install'
             }
         }
-        nodejs('node22.9.0') {
-            echo "coso"
-        }
+        
         // stage('Build') {
         //     steps {
         //         sh 'npm run build'
