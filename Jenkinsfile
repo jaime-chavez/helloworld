@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker { 
-            image 'node:20.18.0-alpine3.20' 
-            args '-v $HOME:/home/jimmy/jenkins'
-        }
-    }
+    agent { any { image 'node:12.16.2' args '-p 3000:3000' } }
     stages {
         stage('Test') {
             steps {
