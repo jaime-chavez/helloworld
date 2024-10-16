@@ -42,7 +42,7 @@
 //         }
 //     }
 //     stages {
-//         stage ('Uno') {
+//         stage ('Test') {
 //             steps {
 //                 echo 'hola mundo'
 //             }
@@ -53,11 +53,10 @@
 pipeline {
     agent any
     stages {
-        stage ('Uno') {
+        stage ('Test') {
             steps {
                 echo 'hola mundo'
                 sh 'gcloud -v'
-                gcloud -v
             }
         }
     }
