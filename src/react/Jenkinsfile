@@ -35,4 +35,9 @@
 
 pipeline {
     agent { dockerfile true }
+    stages {
+        steps {
+            echo 'hola mundo'
+        }
+    }
 }
