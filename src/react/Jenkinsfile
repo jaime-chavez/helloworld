@@ -55,8 +55,10 @@ pipeline {
     stages {
         stage ('Test') {
             steps {
-                echo 'hola mundo'
-                sh 'gcloud -v'
+                dir('src/react') {
+                    echo 'hola mundo'
+                    sh 'docker -v'
+                }
             }
         }
     }
