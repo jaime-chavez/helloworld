@@ -45,6 +45,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('src/react') {
+                    sh 'sudo chown -R 122:124 "/.npm"'
                     sh 'npm install'
                 }
             }
