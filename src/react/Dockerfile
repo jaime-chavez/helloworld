@@ -1,3 +1,8 @@
-FROM node:20.18.0-alpine3.20
+FROM node:20.18.0-alpine3.20 AS build
+WORKDIR /usr/src/app
+COPY . .
 
-RUN apk add -U subversion
+RUN npm install
+RUN npm run build
+
+EXPOSE 80
