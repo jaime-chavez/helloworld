@@ -36,8 +36,10 @@
 pipeline {
     agent { dockerfile true }
     stages {
-        steps {
-            echo 'hola mundo'
+        stage ('Uno') {
+            steps {
+                echo 'hola mundo'
+            }
         }
     }
 }
