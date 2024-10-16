@@ -34,7 +34,12 @@
 // }
 
 pipeline {
-    agent { dockerfile true }
+    agent { 
+        dockerfile {
+            filename 'Dockerfile'
+            dir "src/react"
+        }
+    }
     stages {
         stage ('Uno') {
             steps {
