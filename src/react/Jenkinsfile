@@ -1,4 +1,5 @@
 // NodeJS plugin https://plugins.jenkins.io/nodejs/   configurar en tools
+// GCloud SDK https://plugins.jenkins.io/gcloud-sdk/
 
 // pipeline {
 //     agent {
@@ -33,17 +34,30 @@
 //     }
 // }
 
+// pipeline {
+//     agent { 
+//         dockerfile {
+//             filename 'Dockerfile'
+//             dir "src/react"
+//         }
+//     }
+//     stages {
+//         stage ('Uno') {
+//             steps {
+//                 echo 'hola mundo'
+//             }
+//         }
+//     }
+// }
+
 pipeline {
-    agent { 
-        dockerfile {
-            filename 'Dockerfile'
-            dir "src/react"
-        }
-    }
+    agent any
     stages {
         stage ('Uno') {
             steps {
                 echo 'hola mundo'
+                sh 'gcloud -v'
+                gcloud -v
             }
         }
     }
