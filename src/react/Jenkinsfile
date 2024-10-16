@@ -44,7 +44,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'npm install'
+                dir('src/react') {
+                    sh 'npm install'
+                }
             }
         }
     }
