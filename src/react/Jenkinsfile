@@ -31,7 +31,7 @@ pipeline {
                 dir('src/react') {
                     echo 'hola mundo'
                     sh 'docker -v'
-                    echo '${_IMAGE_PATH}'
+                    echo "${_IMAGE_PATH}"
                 }
             }
         }
