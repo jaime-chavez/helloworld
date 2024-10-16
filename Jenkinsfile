@@ -1,13 +1,20 @@
-// pipeline {
-//     agent { any { image 'node:12.16.2' args '-p 3000:3000' } }
-//     stages {
-//         stage('Test') {
-//             steps {
-//                 sh 'node --version'
-//             }
-//         }
-//     }
-// }
+// Docker plugoin
+// Docker commons
+// Docker multibranch
+
+
+pipeline {
+    agent {
+        docker { image 'node:20.18.0-alpine3.20' }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
 
 
 
@@ -29,14 +36,14 @@
 // }
 
 
-pipeline {
-    agent { dockerfile true }
-    stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-                sh 'svn --version'
-            }
-        }
-    }
-}
+// pipeline {
+//     agent { dockerfile true }
+//     stages {
+//         stage('Test') {
+//             steps {
+//                 sh 'node --version'
+//                 sh 'svn --version'
+//             }
+//         }
+//     }
+// }
