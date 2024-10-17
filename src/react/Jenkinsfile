@@ -22,7 +22,7 @@ pipeline {
         _REPOSITORY = "liverpool-portal-uniformes-dev-images-apps"
         _IMAGE = "frontend-uniformes-service"
         _LOCATION = "us-east4"
-        _DESTINATION_PROJECT_ID = "sit-cicd-images-apps"
+        _DESTINATION_PROJECT_ID = "labuniformes"
         _IMAGE_PATH = "us-east4-docker.pkg.dev/${_DESTINATION_PROJECT_ID}/${_REPOSITORY}/${_IMAGE}"
         _PIPELINE_NAME = "frontend-uniformes-service-pipeline"
     }
