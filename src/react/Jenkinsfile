@@ -33,6 +33,7 @@ pipeline {
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
                         sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
                         sh("docker build -t ${_IMAGE_PATH} .")
+                        sh("docker push ${_IMAGE_PATH}")
                     }
                 }
             }
