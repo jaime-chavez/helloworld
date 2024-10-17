@@ -30,11 +30,9 @@ pipeline {
         stage ('Test') {
             steps {
                 dir('src/react') {
-                    echo 'hola mundo'
-                    sh 'docker -v'
-                    echo "${_IMAGE_PATH}"
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
                         sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
+                        sh("docker build -t ${_IMAGE_PATH} .")
                     }
                 }
             }
