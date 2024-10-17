@@ -19,6 +19,7 @@
 pipeline {
     agent any
     environment {
+        _REPOSITORY = "liverpool-portal-uniformes-dev-images-apps"
         _IMAGE = "frontend-uniformes-service"
         _LOCATION = "us-east4"
         _DESTINATION_PROJECT_ID = "sit-cicd-images-apps"
@@ -32,6 +33,9 @@ pipeline {
                     echo 'hola mundo'
                     sh 'docker -v'
                     echo "${_IMAGE_PATH}"
+                    withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+                        sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
+                    }
                 }
             }
         }
