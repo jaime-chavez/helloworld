@@ -24,7 +24,8 @@ pipeline {
             steps {
                 dir('src/react/cloudrun/qa') {
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                        sh("gcloud run services replace cloud-run-service.yaml")
+                        sh("gcloud config set run/region ${_LOCATION}")
+                        sh("gcloud run deploy cloud-run-service.yaml")
                     }
                 }
             }
