@@ -4,8 +4,8 @@ pipeline {
         _REPOSITORY = "liverpool-portal-uniformes-dev-images-apps"
         _IMAGE = "frontend-uniformes-service"
         _LOCATION = "us-east4"
-        _DESTINATION_PROJECT_ID = "labuniformes"
-        _IMAGE_PATH = "${_LOCATION}-docker.pkg.dev/${_DESTINATION_PROJECT_ID}/${_REPOSITORY}/${_IMAGE}"
+        _PROJECT = "labuniformes"
+        _IMAGE_PATH = "${_LOCATION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE}"
     }
     stages {
         stage ('Build') {
@@ -25,7 +25,7 @@ pipeline {
                 dir('src/react/cloudrun/qa') {
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
                         sh("gcloud config set run/region ${_LOCATION}")
-                        sh("gcloud run services replace cloud-run-service.yaml")
+                        sh("gcloud run services replace cloud-run-service.yaml --project ${_PROJECT}")
                     }
                 }
             }
