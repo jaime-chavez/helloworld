@@ -1,21 +1,3 @@
-
-
-// pipeline {
-//     agent { 
-//         dockerfile {
-//             filename 'Dockerfile'
-//             dir "src/react"
-//         }
-//     }
-//     stages {
-//         stage ('Test') {
-//             steps {
-//                 echo 'hola mundo'
-//             }
-//         }
-//     }
-// }
-
 pipeline {
     agent any
     environment {
@@ -40,9 +22,9 @@ pipeline {
         }
         stage ('Deploy') {
             steps {
-                dir('src/react') {
+                dir('src/react/cloudrun/qa') {
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                        sh("gcloud run services replace ./cloudrun/qa/cloud-run-service.yaml")
+                        sh("gcloud run services replace cloud-run-service.yaml")
                     }
                 }
             }
