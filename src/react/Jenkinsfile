@@ -23,8 +23,7 @@ pipeline {
         _IMAGE = "frontend-uniformes-service"
         _LOCATION = "us-east4"
         _DESTINATION_PROJECT_ID = "labuniformes"
-        _IMAGE_PATH = "us-east4-docker.pkg.dev/${_DESTINATION_PROJECT_ID}/${_REPOSITORY}/${_IMAGE}"
-        _PIPELINE_NAME = "frontend-uniformes-service-pipeline"
+        _IMAGE_PATH = "${_LOCATION}-docker.pkg.dev/${_DESTINATION_PROJECT_ID}/${_REPOSITORY}/${_IMAGE}"
     }
     stages {
         stage ('Test') {
@@ -32,7 +31,7 @@ pipeline {
                 dir('src/react') {
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
                         sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
-                        sh("gcloud auth configure-docker us-east4-docker.pkg.dev")
+                        sh("gcloud auth configure-docker ${_LOCATION}-docker.pkg.dev")
                         sh("docker build -t ${_IMAGE_PATH} .")
                         sh("docker push ${_IMAGE_PATH}")
                     }
