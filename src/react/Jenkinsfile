@@ -32,8 +32,10 @@ pipeline {
                 dir('src/react') {
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
                         sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
-                        sh("docker build -t ${_IMAGE_PATH} .")
-                        sh("docker push ${_IMAGE_PATH}")
+                        sh("gcloud auth configure-docker us-central1-docker.pkg.dev")
+                        sh("docker pull us-central1-docker.pkg.dev/labuniformes/test-cloud-run/smtp:latest")
+                        // sh("docker build -t ${_IMAGE_PATH} .")
+                        // sh("docker push ${_IMAGE_PATH}")
                     }
                 }
             }
