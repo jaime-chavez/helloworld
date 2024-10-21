@@ -16,7 +16,7 @@ spec:
       containerConcurrency: 80
       timeoutSeconds: 300
       containers:
-        - image: ${_IMAGE_PATH}
+        - image: us-east4-docker.pkg.dev/labuniformes/liverpool-portal-uniformes-dev-images-apps/frontend-uniformes-service
           ports:
             - name: http1
               containerPort: 80
