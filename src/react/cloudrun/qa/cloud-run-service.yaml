@@ -1,0 +1,42 @@
+# cat > cloudrun/qa/cloud-run-service.yaml << 'EOF'
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: crp-dev-cr-lvp-uniforms-mf
+  annotations:
+    run.googleapis.com/description: Portal Uniformes Frontend QA
+
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: 1
+        autoscaling.knative.dev/maxScale: 10
+    spec:
+      containerConcurrency: 80
+      timeoutSeconds: 300
+      containers:
+        - image: ${_IMAGE_PATH}
+          ports:
+            - name: http1
+              containerPort: 80
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: 1000m
+
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 60
+            timeoutSeconds: 60
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 60
+            timeoutSeconds: 60
+            failureThreshold: 3
+# EOF

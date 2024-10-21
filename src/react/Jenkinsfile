@@ -26,7 +26,7 @@ pipeline {
         _IMAGE_PATH = "${_LOCATION}-docker.pkg.dev/${_DESTINATION_PROJECT_ID}/${_REPOSITORY}/${_IMAGE}"
     }
     stages {
-        stage ('Test') {
+        stage ('Build') {
             steps {
                 dir('src/react') {
                     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
@@ -34,6 +34,15 @@ pipeline {
                         sh("gcloud auth configure-docker ${_LOCATION}-docker.pkg.dev")
                         sh("docker build -t ${_IMAGE_PATH} .")
                         sh("docker push ${_IMAGE_PATH}")
+                    }
+                }
+            }
+        }
+        stage ('Deploy') {
+            steps {
+                dir('src/react') {
+                    withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+                        sh("gcloud run services replace ./cloudrun/qa/cloud-run-service.yaml")
                     }
                 }
             }
