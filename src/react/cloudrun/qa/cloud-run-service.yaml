@@ -2,11 +2,23 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: crp-dev-cr-lvp-uniforms-mf
+  annotations:
+    autoscaling.knative.dev/maxScale: '1'
+    autoscaling.knative.dev/minScale: '0'
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+    # run.googleapis.com/ingress: internal-and-cloud-load-balancing
+    # run.googleapis.com/ingress-status: internal-and-cloud-load-balancing
 spec:
   template:
+    metadata:
+      annotations:
+        run.googleapis.com/cpu-throttling: 'true'  # true: CPU only when requested, false: always allocated
+        run.googleapis.com/startup-cpu-boost: 'false'
     spec:
-      containerConcurrency: 80
-      timeoutSeconds: 300
+      containerConcurrency: 8
+      timeoutSeconds: 60
+      serviceAccountName: 457816054800-compute@developer.gserviceaccount.com
       containers:
         - image: us-east4-docker.pkg.dev/labuniformes/liverpool-portal-uniformes-dev-images-apps/frontend-uniformes-service
           ports:
@@ -20,13 +32,15 @@ spec:
             httpGet:
               path: /
               port: 80
-            periodSeconds: 60
-            timeoutSeconds: 60
-            failureThreshold: 3
+            initialDelaySeconds: 0    # 0 - 240   default: 0    wait after the container has started before performing the first probe
+            periodSeconds: 10         # 1 - 240   default: 10   period at which to perform the probe
+            timeoutSeconds: 5        # 1 - 240   default: 1    number of seconds to wait until the probe times out, cannot exceed period value
+            failureThreshold: 3       #           default: 3    number of times to retry the probe before shutting down the container. 
           livenessProbe:
             httpGet:
               path: /
               port: 80
-            periodSeconds: 60
-            timeoutSeconds: 60
-            failureThreshold: 3
+            initialDelaySeconds: 240    # 0 - 240   default: 0    wait after the container has started before performing the first probe
+            periodSeconds: 600          # 1 - 3600  default: 10   period at which to perform the probe      
+            timeoutSeconds: 15          # 1 - 3600  default: 1    number of seconds to wait until the probe times out, cannot exceed period value
+            failureThreshold: 3         #           default: 3    number of times to retry the probe before shutting down the container. 

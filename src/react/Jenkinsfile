@@ -11,8 +11,8 @@ pipeline {
         stage ('Build') {
             steps {
                 dir('src/react') {
+                    withCredentials([[$class: 'GoogleServiceAccountFromPrivateKeyCredentials', credentialsId: 'key-sa2']]) {
                     // withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                    withCredentials([file(credentialsId: 'key-sa2', variable: 'GC_KEY')]) {
                         sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
                         // sh("gcloud auth configure-docker ${_LOCATION}-docker.pkg.dev")
                         // sh("docker build -t ${_IMAGE_PATH} .")
@@ -26,7 +26,7 @@ pipeline {
         //         dir('src/react/cloudrun/qa') {
         //             withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
         //                 sh("gcloud config set run/region ${_LOCATION}")
-        //                 sh("gcloud run services replace cloud-run-service.yaml --project ${_PROJECT}")
+        //                 sh("gcloud run services replace cloud-run-service.yaml --project ${_PROJECT} --region ${_LOCATION}")
         //             }
         //         }
         //     }
