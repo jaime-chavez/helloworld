@@ -39,12 +39,10 @@ pipeline {
     }
     post {
         always {
-            echo("${BUILD_URL}/consoleText")
-            echo("${_LOGNAME}")
-            // echo("---- UPLOAD LOG ----")
-            // withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-            //     sh("gsutil cp ${BUILD_URL}/consoleText gs://${env.BUCKET}/logs/${_LOGNAME} ")
-            // }
+            echo("---- UPLOAD LOG ----")
+            withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+                sh("gsutil cp ${BUILD_URL}/consoleText gs://${env.BUCKET}/logs/${_LOGNAME} ")
+            }
             // echo("---- Delete image ----")
             // sh("docker rmi ${_IMAGE_PATH}")
         }
