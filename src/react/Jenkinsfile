@@ -1,15 +1,17 @@
 // https://plugins.jenkins.io/build-timestamp/#:~:text=Export%20build%20timestamps%20to%20build%20env
+// https://plugins.jenkins.io/google-storage-plugin/
 
 pipeline {
     agent any
     environment {
-        _REPOSITORY = "liverpool-portal-uniformes-dev-images-apps"
-        _IMAGE = "frontend-uniformes-service"
-        _LOCATION = "us-east4"
-        _PROJECT = "labuniformes"
-        _IMAGE_PATH = "${_LOCATION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE}"
-        _BUCKET = 'jenkinsbucketlab' 
-        _LOGNAME = "log_uniformesfrontend_${BUILD_TIMESTAMP}.txt" //configurar en system
+        REPOSITORY = "liverpool-portal-uniformes-dev-images-apps"
+        IMAGE = "frontend-uniformes-service"
+        LOCATION = "us-east4"
+        PROJECT = "labuniformes"
+        IMAGE_PATH = "${_LOCATION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE}"
+        BUCKET = 'jenkinsbucketlab' 
+        LOGNAME = "log_uniformesfrontend_${BUILD_TIMESTAMP}.txt" //configurar en system
+        CREDENTIALS_ID ='labkey' //configurar en credentials,  como Google Service Account from private key
     }
     stages {
         stage ('Build') {
@@ -40,16 +42,9 @@ pipeline {
     post {
         always {
             echo("---- UPLOAD LOG ----")
-            step([$class: 'StdoutUploadStep', credentialsId: "key-sa",  bucket: "gs://${env._BUCKET}/logs", logName: env._LOGNAME])
-        }
-        // always {
-        //     echo("---- UPLOAD LOG ----")
-        //     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-        //         sh("curl  ${BUILD_URL}/consoleText -o ${_LOGNAME}")
-        //         sh("gsutil cp ${_LOGNAME} gs://${_BUCKET}/logs/ ")
-        //     }
-            // echo("---- Delete image ----")
+            step([$class: 'StdoutUploadStep', credentialsId: env.CREDENTIALS_ID,  bucket: "gs://${BUCKET}/logs", logName: env.LOGNAME])
+            echo("---- Delete image ----")
             // sh("docker rmi ${_IMAGE_PATH}")
-        // }
+        }
     }
 }
