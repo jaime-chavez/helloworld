@@ -40,12 +40,16 @@ pipeline {
     post {
         always {
             echo("---- UPLOAD LOG ----")
-            withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                sh("curl  ${BUILD_URL}/consoleText -o ${_LOGNAME}")
-                sh("gsutil cp ${_LOGNAME} gs://${_BUCKET}/logs/ ")
-            }
+            step([$class: 'StdoutUploadStep', credentialsId: "key-sa",  bucket: "gs://${env._BUCKET}/logs", logName: env._LOGNAME])
+        }
+        // always {
+        //     echo("---- UPLOAD LOG ----")
+        //     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+        //         sh("curl  ${BUILD_URL}/consoleText -o ${_LOGNAME}")
+        //         sh("gsutil cp ${_LOGNAME} gs://${_BUCKET}/logs/ ")
+        //     }
             // echo("---- Delete image ----")
             // sh("docker rmi ${_IMAGE_PATH}")
-        }
+        // }
     }
 }
