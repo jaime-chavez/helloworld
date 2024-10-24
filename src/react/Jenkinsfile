@@ -44,8 +44,6 @@ pipeline {
                 sh("gsutil cp ${BUILD_URL}/consoleText gs://${env.BUCKET}/logs/${__LOGNAME} ")
             }
             echo("---- Delete image ----")
-            sh("docker rmi node:20.18.0-alpine3.20")
-            sh("docker rmi nginx:1.17.1-alpine")
             sh("docker rmi ${_IMAGE_PATH}")
         }
     }
