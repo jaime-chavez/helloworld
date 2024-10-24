@@ -15,36 +15,38 @@ pipeline {
         stage ('Build') {
             steps {
                 echo("---- Build image----")
-                dir('src/react') {
-                    withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                        sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
-                        sh("gcloud auth configure-docker ${_LOCATION}-docker.pkg.dev")
-                        sh("docker build -t ${_IMAGE_PATH} .")
-                        sh("docker push ${_IMAGE_PATH}")
-                    }
-                }
+                // dir('src/react') {
+                //     withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+                //         sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
+                //         sh("gcloud auth configure-docker ${_LOCATION}-docker.pkg.dev")
+                //         sh("docker build -t ${_IMAGE_PATH} .")
+                //         sh("docker push ${_IMAGE_PATH}")
+                //     }
+                // }
             }
         }
-        stage ('Deploy') {
-            steps {
-                echo("---- Deploy to Cloud Run ----")
-                dir('src/react/cloudrun/qa') {
-                    withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                        sh("gcloud config set run/region ${_LOCATION}")
-                        sh("gcloud run services replace cloud-run-service.yaml --project ${_PROJECT} --region ${_LOCATION}")
-                    }
-                }
-            }
-        }
+        // stage ('Deploy') {
+        //     steps {
+        //         echo("---- Deploy to Cloud Run ----")
+        //         dir('src/react/cloudrun/qa') {
+        //             withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+        //                 sh("gcloud config set run/region ${_LOCATION}")
+        //                 sh("gcloud run services replace cloud-run-service.yaml --project ${_PROJECT} --region ${_LOCATION}")
+        //             }
+        //         }
+        //     }
+        // }
     }
     post {
         always {
-            echo("---- UPLOAD LOG ----")
-            withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                sh("gsutil cp ${BUILD_URL}/consoleText gs://${env.BUCKET}/logs/${__LOGNAME} ")
-            }
-            echo("---- Delete image ----")
-            sh("docker rmi ${_IMAGE_PATH}")
+            echo("${BUILD_URL}/consoleText")
+            echo("${_LOGNAME}")
+            // echo("---- UPLOAD LOG ----")
+            // withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+            //     sh("gsutil cp ${BUILD_URL}/consoleText gs://${env.BUCKET}/logs/${_LOGNAME} ")
+            // }
+            // echo("---- Delete image ----")
+            // sh("docker rmi ${_IMAGE_PATH}")
         }
     }
 }
