@@ -41,7 +41,8 @@ pipeline {
         always {
             echo("---- UPLOAD LOG ----")
             withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-                sh("gsutil cp ${BUILD_URL}/consoleText gs://${env.BUCKET}/logs/${_LOGNAME} ")
+                sh("curl  ${BUILD_URL}/consoleText -o ${_LOGNAME}")
+                sh("gsutil cp ${_LOGNAME} gs://${env.BUCKET}/logs/ ")
             }
             // echo("---- Delete image ----")
             // sh("docker rmi ${_IMAGE_PATH}")
