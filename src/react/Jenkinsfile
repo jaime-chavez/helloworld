@@ -1,3 +1,5 @@
+// https://plugins.jenkins.io/build-timestamp/#:~:text=Export%20build%20timestamps%20to%20build%20env
+
 pipeline {
     agent any
     environment {
@@ -6,30 +8,45 @@ pipeline {
         _LOCATION = "us-east4"
         _PROJECT = "labuniformes"
         _IMAGE_PATH = "${_LOCATION}-docker.pkg.dev/${_PROJECT}/${_REPOSITORY}/${_IMAGE}"
+        _BUCKET = 'jenkinsbucketlab' 
+        _LOGNAME = "log_uniformesfrontend_${BUILD_TIMESTAMP}.txt" //configurar en system
     }
     stages {
         stage ('Build') {
             steps {
+                echo("---- Build image----")
                 dir('src/react') {
-                    withCredentials([[$class: 'GoogleServiceAccountFromPrivateKeyCredentials', credentialsId: 'key-sa2']]) {
-                    // withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+                    withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
                         sh("gcloud auth activate-service-account --key-file=${GC_KEY}")
-                        // sh("gcloud auth configure-docker ${_LOCATION}-docker.pkg.dev")
-                        // sh("docker build -t ${_IMAGE_PATH} .")
-                        // sh("docker push ${_IMAGE_PATH}")
+                        sh("gcloud auth configure-docker ${_LOCATION}-docker.pkg.dev")
+                        sh("docker build -t ${_IMAGE_PATH} .")
+                        sh("docker push ${_IMAGE_PATH}")
                     }
                 }
             }
         }
-        // stage ('Deploy') {
-        //     steps {
-        //         dir('src/react/cloudrun/qa') {
-        //             withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
-        //                 sh("gcloud config set run/region ${_LOCATION}")
-        //                 sh("gcloud run services replace cloud-run-service.yaml --project ${_PROJECT} --region ${_LOCATION}")
-        //             }
-        //         }
-        //     }
-        // }
+        stage ('Deploy') {
+            steps {
+                echo("---- Deploy to Cloud Run ----")
+                dir('src/react/cloudrun/qa') {
+                    withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+                        sh("gcloud config set run/region ${_LOCATION}")
+                        sh("gcloud run services replace cloud-run-service.yaml --project ${_PROJECT} --region ${_LOCATION}")
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo("---- UPLOAD LOG ----")
+            withCredentials([file(credentialsId: 'key-sa', variable: 'GC_KEY')]) {
+                sh("gsutil cp ${BUILD_URL}/consoleText gs://${env.BUCKET}/logs/${__LOGNAME} ")
+            }
+            echo("---- Delete image ----")
+            sh("docker rmi node:20.18.0-alpine3.20")
+            sh("docker rmi nginx:1.17.1-alpine")
+            sh("docker rmi ${_IMAGE_PATH}")
+        }
     }
 }
