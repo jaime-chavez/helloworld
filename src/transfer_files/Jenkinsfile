@@ -1,6 +1,6 @@
 // https://plugins.jenkins.io/multibranch-build-strategy-extension/
 // https://plugins.jenkins.io/google-storage-plugin/
-// https://plugins.jenkins.io/build-timestamp/#:~:text=Export%20build%20timestamps%20to%20build%20env
+// https://plugins.jenkins.io/build-timestamp/
 
 
 pipeline {
