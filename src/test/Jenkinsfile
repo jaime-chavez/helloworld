@@ -42,17 +42,17 @@ pipeline {
                 
             }
         }
-        stage ("Update files") {
-            when { branch pattern: BRANCHES, comparator: "REGEXP"; beforeAgent true }
-            agent { kubernetes { inheritFrom 'gcloud'; showRawYaml false } }
-            steps {
-               container("gcloud") {
-                    script {
-                        readVarsFromYaml("jenkins/environments/variables.yaml") 
-                        sh ("gcloud storage rsync . gs://$bucket --exclude='jenkins'")           
-                    }
-                }
-            }
-        }
+        // stage ("Update files") {
+        //     when { branch pattern: BRANCHES, comparator: "REGEXP"; beforeAgent true }
+        //     agent { kubernetes { inheritFrom 'gcloud'; showRawYaml false } }
+        //     steps {
+        //        container("gcloud") {
+        //             script {
+        //                 readVarsFromYaml("jenkins/environments/variables.yaml") 
+        //                 sh ("gcloud storage rsync . gs://$bucket --exclude='jenkins'")           
+        //             }
+        //         }
+        //     }
+        // }
     }
 }  
