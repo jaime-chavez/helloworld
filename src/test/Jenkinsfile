@@ -1,19 +1,28 @@
-// @Library([
-//     'gcp-library@v1.0.0',
-//     'common-library@v1.0.3'
-// ]) _
+
+def readYaml(String readYamlFilePath) {
+    """
+    Function to read key-value pairs from a YAML file and return them as a map.
+    """
+    if (fileExists(readYamlFilePath)) {
+        return readYaml(file: readYamlFilePath)
+    } else {
+        error "File $readYamlFilePath not found in the workspace!"
+    }
+}
 
 def readVarsFromYaml(String readYamlFilePath){
     """
     Función para leer variables llave valor(String) desde un archivo yaml
     """
-
-    def yamlFile = readYaml file: "$readYamlFilePath"
-    yamlFile.each { key, value ->
-        env."$key" = value
-        echo "Se crea variable $key = $value"
+    if(fileExists(readYamlFilePath)){
+        def yamlFile = readYaml file: "$readYamlFilePath"
+        yamlFile.each { key, value ->
+            env."$key" = value
+            echo "Se crea variable $key = $value"
+        }
+    } else {
+        error "No se encontró archivo $readYamlFilePath en el workspace!"
     }
-
 }
 
 pipeline {
@@ -33,7 +42,6 @@ pipeline {
 
             steps {
                script { 
-                    echo "test"
                     readVarsFromYaml("src/test/environments/variables.yaml") 
                     env.bucket = sh(script: "eval echo \$$BRANCH_NAME", returnStdout: true).trim()
                     echo "Se encuentra bucket: $bucket"
@@ -41,17 +49,5 @@ pipeline {
                 
             }
         }
-        // stage ("Update files") {
-        //     when { branch pattern: BRANCHES, comparator: "REGEXP"; beforeAgent true }
-        //     agent { kubernetes { inheritFrom 'gcloud'; showRawYaml false } }
-        //     steps {
-        //        container("gcloud") {
-        //             script {
-        //                 readVarsFromYaml("jenkins/environments/variables.yaml") 
-        //                 sh ("gcloud storage rsync . gs://$bucket --exclude='jenkins'")           
-        //             }
-        //         }
-        //     }
-        // }
     }
 }  
