@@ -1,7 +1,7 @@
-@Library([
-    'gcp-library@v1.0.0',
-    'common-library@v1.0.3'
-]) _
+// @Library([
+//     'gcp-library@v1.0.0',
+//     'common-library@v1.0.3'
+// ]) _
 
 def readVarsFromYaml(String readYamlFilePath){
     """
@@ -24,7 +24,7 @@ pipeline {
 
     environment {
         // BRANCHES = "^stage_(dev|qas|pro)_env_(dev|qas|pro)$"
-        BRANCHES = "dev"
+        BRANCHES = "main"
     }
  
     stages {
@@ -35,7 +35,7 @@ pipeline {
 
             steps {
                script { 
-                    readVarsFromYaml("jenkins/environments/variables.yaml") 
+                    readVarsFromYaml("src/test/environments/variables.yaml") 
                     env.bucket = sh(script: "eval echo \$$BRANCH_NAME", returnStdout: true).trim()
                     echo "Se encuentra bucket: $bucket"
                 }
