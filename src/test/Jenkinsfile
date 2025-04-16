@@ -1,15 +1,3 @@
-
-// def readYaml(String readYamlFilePath) {
-//     """
-//     Function to read key-value pairs from a YAML file and return them as a map.
-//     """
-//     if (fileExists(readYamlFilePath)) {
-//         return readYaml(file: readYamlFilePath)
-//     } else {
-//         error "File $readYamlFilePath not found in the workspace!"
-//     }
-// }
-
 def readVarsFromYaml(String readYamlFilePath){
     """
     Función para leer variables llave valor(String) desde un archivo yaml
@@ -45,6 +33,17 @@ pipeline {
                     readVarsFromYaml("src/test/environments/variables.yaml") 
                     env.bucket = sh(script: "eval echo \$$BRANCH_NAME", returnStdout: true).trim()
                     echo "Se encuentra bucket: $bucket"
+
+                    def folderMapping = [
+                        'folder1': 'gs://$bucket/folder1',
+                        'folder2': 'gs://$bucket/folder2',
+                        'folder3': 'gs://$bucket/folder3'
+                    ]
+
+                    folderMapping.each { localFolder, gcsPath ->
+                        echo "Syncing $localFolder to $gcsPath"
+                        // sh "gcloud storage rsync $localFolder $gcsPath --exclude='jenkins'"
+                    }
                 }
                 
             }
