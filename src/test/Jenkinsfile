@@ -30,7 +30,7 @@ pipeline {
     stages {
         stage ("Initialize Pipeline") {
             when { branch pattern: BRANCHES, comparator: "REGEXP"; beforeAgent true }
-            any { kubernetes { inheritFrom 'gcloud'; showRawYaml false } }
+            // agent { kubernetes { inheritFrom 'gcloud'; showRawYaml false } }
             
 
             steps {
