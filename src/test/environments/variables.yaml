@@ -1,10 +1,1 @@
-stage_dev_env_dev: prueba A
-stage_dev_env_qas: prueba b
-stage_dev_env_pro: Prueba C
-stage_qas_env_dev: prueba D
-stage_qas_env_qas: prueba E
-stage_qas_env_pro: prueba F
-stage_pro_env_dev: prueba G
-stage_pro_env_qas: prueba H
-stage_pro_env_pro: prueba I
-main: prueba dev 
+/src/test/fodler1: gs://bucket/hola
