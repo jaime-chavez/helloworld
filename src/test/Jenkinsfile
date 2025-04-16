@@ -1,14 +1,14 @@
 
-def readYaml(String readYamlFilePath) {
-    """
-    Function to read key-value pairs from a YAML file and return them as a map.
-    """
-    if (fileExists(readYamlFilePath)) {
-        return readYaml(file: readYamlFilePath)
-    } else {
-        error "File $readYamlFilePath not found in the workspace!"
-    }
-}
+// def readYaml(String readYamlFilePath) {
+//     """
+//     Function to read key-value pairs from a YAML file and return them as a map.
+//     """
+//     if (fileExists(readYamlFilePath)) {
+//         return readYaml(file: readYamlFilePath)
+//     } else {
+//         error "File $readYamlFilePath not found in the workspace!"
+//     }
+// }
 
 def readVarsFromYaml(String readYamlFilePath){
     """
