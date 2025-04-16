@@ -7,15 +7,13 @@ def readVarsFromYaml(String readYamlFilePath){
     """
     Función para leer variables llave valor(String) desde un archivo yaml
     """
-    if(fileExists(readYamlFilePath)){
-        def yamlFile = readYaml file: "$readYamlFilePath"
-        yamlFile.each { key, value ->
-            env."$key" = value
-            echo "Se crea variable $key = $value"
-        }
-    } else {
-        error "No se encontró archivo $readYamlFilePath en el workspace!"
+
+    def yamlFile = readYaml file: "$readYamlFilePath"
+    yamlFile.each { key, value ->
+        env."$key" = value
+        echo "Se crea variable $key = $value"
     }
+
 }
 
 pipeline {
@@ -35,6 +33,7 @@ pipeline {
 
             steps {
                script { 
+                    echo "test"
                     readVarsFromYaml("src/test/environments/variables.yaml") 
                     env.bucket = sh(script: "eval echo \$$BRANCH_NAME", returnStdout: true).trim()
                     echo "Se encuentra bucket: $bucket"
