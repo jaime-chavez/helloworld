@@ -7,4 +7,4 @@ stage_qas_env_pro: prueba F
 stage_pro_env_dev: prueba G
 stage_pro_env_qas: prueba H
 stage_pro_env_pro: prueba I
-dev: prueba dev 
+main: prueba dev 
