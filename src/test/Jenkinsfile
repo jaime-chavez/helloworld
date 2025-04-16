@@ -20,7 +20,7 @@ def readVarsFromYaml(String readYamlFilePath){
 
 pipeline {
 
-    agent none
+    agent any
 
     environment {
         // BRANCHES = "^stage_(dev|qas|pro)_env_(dev|qas|pro)$"
