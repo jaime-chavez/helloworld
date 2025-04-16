@@ -1,16 +1,28 @@
-def readVarsFromYaml(String readYamlFilePath){
+def readYaml(String readYamlFilePath) {
     """
-    Función para leer variables llave valor(String) desde un archivo yaml
+    Function to read key-value pairs from a YAML file and return them as a map.
     """
-    if(fileExists(readYamlFilePath)){
-        def yamlFile = readYaml file: "$readYamlFilePath"
-        yamlFile.each { key, value ->
-            env."$key" = value
-            echo "Se crea variable $key = $value"
-        }
+    if (fileExists(readYamlFilePath)) {
+        return readYaml(file: readYamlFilePath)
     } else {
-        error "No se encontró archivo $readYamlFilePath en el workspace!"
+        error "File $readYamlFilePath not found in the workspace!"
     }
+}
+
+def readVarsFromYaml(String readYamlFilePath) {
+    """
+    Function to read key-value variables (String) from a YAML file
+    and return them as a map.
+    """
+    def yamlFile = readYaml(readYamlFilePath)
+    def variablesMap = [:] // Initialize an empty map
+
+    yamlFile.each { key, value ->
+        variablesMap[key] = value // Store each key-value pair in the map
+        echo "Se crea variable $key = $value"
+    }
+
+    return variablesMap // Return the map containing all variables
 }
 
 pipeline {
@@ -25,22 +37,13 @@ pipeline {
     stages {
         stage ("Initialize Pipeline") {
             when { branch pattern: BRANCHES, comparator: "REGEXP"; beforeAgent true }
-            // agent { kubernetes { inheritFrom 'gcloud'; showRawYaml false } }
             
 
             steps {
                script { 
-                    readVarsFromYaml("src/test/environments/variables.yaml") 
-                    env.bucket = sh(script: "eval echo \$$BRANCH_NAME", returnStdout: true).trim()
-                    echo "Se encuentra bucket: $bucket"
+                    def variables = readVarsFromYaml("src/test/environments/variables.yaml")
 
-                    def folderMapping = [
-                        'folder1': 'gs://$bucket/folder1',
-                        'folder2': 'gs://$bucket/folder2',
-                        'folder3': 'gs://$bucket/folder3'
-                    ]
-
-                    folderMapping.each { localFolder, gcsPath ->
+                    env.variables.each { localFolder, gcsPath ->
                         echo "Syncing $localFolder to $gcsPath"
                         // sh "gcloud storage rsync $localFolder $gcsPath --exclude='jenkins'"
                     }
