@@ -19,7 +19,7 @@ def readVarsFromYaml(String readYamlFilePath) {
 
     yamlFile.each { key, value ->
         variablesMap[key] = value // Store each key-value pair in the map
-        echo "Se crea variable $key = $value"
+        // echo "Se crea variable $key = $value"
     }
 
     return variablesMap // Return the map containing all variables
@@ -42,8 +42,8 @@ pipeline {
             steps {
                script { 
                     def variables = readVarsFromYaml("src/test/environments/variables.yaml")
-
-                    env.variables.each { localFolder, gcsPath ->
+                    
+                    variables.each { localFolder, gcsPath ->
                         echo "Syncing $localFolder to $gcsPath"
                         // sh "gcloud storage rsync $localFolder $gcsPath --exclude='jenkins'"
                     }
